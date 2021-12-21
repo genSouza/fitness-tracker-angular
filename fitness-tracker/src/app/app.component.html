@@ -5,7 +5,13 @@
   <mat-sidenav-content>
     <mat-toolbar color="primary">
       <div>
-        <button>Toogle sidenav</button>
+        <button (click)="sidenav.toggle()">Toogle sidenav</button>
+      </div>
+      <div>LOGO</div>
+      <div>
+        <a routerLink="/signup">Signup</a>
+        <a routerLink="/login">Login</a>
+        <a routerLink="/training">Training</a>
       </div>
     </mat-toolbar>
     <router-outlet></router-outlet>
