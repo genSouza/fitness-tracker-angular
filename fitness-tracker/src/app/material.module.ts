@@ -11,6 +11,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatToolbarModule,
     MatListModule,
     MatTabsModule,
+    MatCardModule,
     ReactiveFormsModule,
   ],
   exports: [
@@ -41,6 +43,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatToolbarModule,
     MatListModule,
     MatTabsModule,
+    MatCardModule,
     ReactiveFormsModule,
   ],
 })
