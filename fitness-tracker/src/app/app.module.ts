@@ -1,3 +1,4 @@
+import { StopTrainingComponent } from './training/current-training/stop-training.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -29,6 +30,7 @@ import { CurrentTrainingComponent } from './training/current-training/current-tr
     HeaderComponent,
     SidenavListComponent,
     CurrentTrainingComponent,
+    StopTrainingComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,5 +42,6 @@ import { CurrentTrainingComponent } from './training/current-training/current-tr
   ],
   providers: [],
   bootstrap: [AppComponent],
+  entryComponents: [StopTrainingComponent],
 })
 export class AppModule {}
