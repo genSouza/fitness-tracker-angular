@@ -16,6 +16,10 @@ export class TrainingService {
     return this.availableExercises.slice();
   }
 
+  getRunningExercise(): Exercise {
+    return { ...this.runningExercise };
+  }
+
   startExercise(selectId: string) {
     const find = this.availableExercises.find((item) => item.id === selectId);
     if (find) {
