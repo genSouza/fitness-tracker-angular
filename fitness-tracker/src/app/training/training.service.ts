@@ -52,11 +52,12 @@ export class TrainingService {
     if (find) {
       this.runningExercise = find;
     }
+
     this.exerciseChanged.next({ ...this.runningExercise });
   }
 
   completeExercise() {
-    this.exercises.push({
+   this.addDataToDatabase({
       ...this.runningExercise,
       date: new Date(),
       state: 'completed',
@@ -66,7 +67,7 @@ export class TrainingService {
   }
 
   cancelExercise(progress: number) {
-    this.exercises.push({
+    this.addDataToDatabase({
       ...this.runningExercise,
       duration: this.runningExercise.duration * (progress / 100),
       calories: this.runningExercise.calories * (progress / 100),
@@ -75,5 +76,9 @@ export class TrainingService {
     });
     this.runningExercise = {} as Exercise;
     this.exerciseChanged.next(null);
+  }
+
+  addDataToDatabase(exercise: Exercise) {
+    this.db.collection('finishedExercises').add(exercise);
   }
 }
