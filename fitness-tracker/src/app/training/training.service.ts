@@ -7,10 +7,10 @@ import { Injectable } from '@angular/core';
 export class TrainingService {
   exerciseChanged = new Subject<Exercise | null>();
   exercisesChanged = new Subject<Exercise[]>();
+  finishedExercisesChanged = new Subject<Exercise[]>();
   private availableExercises: Exercise[] = [];
-
   private runningExercise!: Exercise;
-  private exercises: Exercise[] = [];
+
 
   /**
    *
@@ -43,8 +43,13 @@ export class TrainingService {
     return { ...this.runningExercise };
   }
 
-  getCompletedOrCancelledExercises() {
-    return this.exercises.slice();
+  fetchCompletedOrCancelledExercises() {
+    this.db
+      .collection('finishedExercises')
+      .valueChanges()
+      .subscribe((exercises: unknown) => {
+        this.finishedExercisesChanged.next(exercises as Exercise[])
+      });
   }
 
   startExercise(selectId: string) {
@@ -57,7 +62,7 @@ export class TrainingService {
   }
 
   completeExercise() {
-   this.addDataToDatabase({
+    this.addDataToDatabase({
       ...this.runningExercise,
       date: new Date(),
       state: 'completed',
