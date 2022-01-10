@@ -37,6 +37,7 @@ export class AuthService {
   }
 
   logout() {
+    this.afAuth.signOut();
     this.isAuthenticaded = false;
     this.authChange.next(false);
     this.router.navigate(['/login']);
