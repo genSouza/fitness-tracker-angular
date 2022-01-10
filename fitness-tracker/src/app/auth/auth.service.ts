@@ -10,6 +10,7 @@ export class AuthService {
   authChange = new Subject<boolean>();
   private user!: User | null;
   private isAuthenticaded = false;
+
   /**
    * internal
    */
@@ -21,12 +22,25 @@ export class AuthService {
   registerUser(authData: AuthData) {
     this.afAuth
       .createUserWithEmailAndPassword(authData.email, authData.password)
-      .then((result) => {
-        this.authSuccessfully();
-      })
+      .then((result) => {})
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  initAuthListener() {
+    this.afAuth.authState.subscribe((user) => {
+      if (user) {
+        this.isAuthenticaded = true;
+        this.authChange.next(true);
+        this.router.navigate(['/training']);
+      } else {
+        this.trainingService.cancelSubscritions();
+        this.isAuthenticaded = false;
+        this.authChange.next(false);
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
   login(authData: AuthData) {
@@ -34,7 +48,6 @@ export class AuthService {
       .signInWithEmailAndPassword(authData.email, authData.password)
       .then((result) => {
         console.log(result);
-        this.authSuccessfully();
       })
       .catch((error) => {
         console.log(error);
@@ -42,20 +55,10 @@ export class AuthService {
   }
 
   logout() {
-    this.trainingService.cancelSubscritions();
     this.afAuth.signOut();
-    this.isAuthenticaded = false;
-    this.authChange.next(false);
-    this.router.navigate(['/login']);
   }
 
   isAuth() {
     return this.isAuthenticaded;
-  }
-
-  private authSuccessfully() {
-    this.isAuthenticaded = true;
-    this.authChange.next(true);
-    this.router.navigate(['/training']);
   }
 }
