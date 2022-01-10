@@ -8,7 +8,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 export class AuthService {
   authChange = new Subject<boolean>();
   private user!: User | null;
-
+  private isAuthenticaded = false;
   /**
    * internal
    */
@@ -17,7 +17,6 @@ export class AuthService {
     this.afAuth
       .createUserWithEmailAndPassword(authData.email, authData.password)
       .then((result) => {
-        console.log(result);
         this.authSuccessfully();
       })
       .catch((error) => {
@@ -38,20 +37,17 @@ export class AuthService {
   }
 
   logout() {
-    this.user = null;
+    this.isAuthenticaded = false;
     this.authChange.next(false);
     this.router.navigate(['/login']);
   }
 
-  getUser() {
-    return { ...this.user };
-  }
-
   isAuth() {
-    return this.user != null;
+    return this.isAuthenticaded;
   }
 
   private authSuccessfully() {
+    this.isAuthenticaded = true;
     this.authChange.next(true);
     this.router.navigate(['/training']);
   }
