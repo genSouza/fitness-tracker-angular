@@ -2,7 +2,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Exercise } from './exercise.model';
 import { map, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
-
+import { Subscription } from 'rxjs';
 @Injectable()
 export class TrainingService {
   exerciseChanged = new Subject<Exercise | null>();
@@ -10,33 +10,34 @@ export class TrainingService {
   finishedExercisesChanged = new Subject<Exercise[]>();
   private availableExercises: Exercise[] = [];
   private runningExercise!: Exercise;
-
-
+  private fbSubs: Subscription[] = [];
   /**
    *
    */
   constructor(private db: AngularFirestore) {}
 
   fetchAvailableExercises() {
-    this.db
-      .collection('availableExercises')
-      .snapshotChanges()
-      .pipe(
-        map((docArray: any[]) => {
-          return docArray.map((doc) => {
-            return {
-              id: doc.payload.doc.id,
-              name: doc.payload.doc.data().name,
-              duration: doc.payload.doc.data().duration,
-              calories: doc.payload.doc.data().calories,
-            };
-          });
+    this.fbSubs.push(
+      this.db
+        .collection('availableExercises')
+        .snapshotChanges()
+        .pipe(
+          map((docArray: any[]) => {
+            return docArray.map((doc) => {
+              return {
+                id: doc.payload.doc.id,
+                name: doc.payload.doc.data().name,
+                duration: doc.payload.doc.data().duration,
+                calories: doc.payload.doc.data().calories,
+              };
+            });
+          })
+        )
+        .subscribe((exercises: Exercise[]) => {
+          this.availableExercises = exercises;
+          this.exercisesChanged.next([...this.availableExercises]);
         })
-      )
-      .subscribe((exercises: Exercise[]) => {
-        this.availableExercises = exercises;
-        this.exercisesChanged.next([...this.availableExercises]);
-      });
+    );
   }
 
   getRunningExercise(): Exercise {
@@ -44,12 +45,14 @@ export class TrainingService {
   }
 
   fetchCompletedOrCancelledExercises() {
-    this.db
-      .collection('finishedExercises')
-      .valueChanges()
-      .subscribe((exercises: unknown) => {
-        this.finishedExercisesChanged.next(exercises as Exercise[])
-      });
+    this.fbSubs.push(
+      this.db
+        .collection('finishedExercises')
+        .valueChanges()
+        .subscribe((exercises: unknown) => {
+          this.finishedExercisesChanged.next(exercises as Exercise[]);
+        })
+    );
   }
 
   startExercise(selectId: string) {
@@ -85,5 +88,9 @@ export class TrainingService {
 
   addDataToDatabase(exercise: Exercise) {
     this.db.collection('finishedExercises').add(exercise);
+  }
+
+  cancelSubscritions() {
+    this.fbSubs.forEach((subs) => subs.unsubscribe());
   }
 }
