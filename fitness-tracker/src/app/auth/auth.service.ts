@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { AuthData } from './auth-data.model';
 import { User } from './user.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Injectable()
 export class AuthService {
   authChange = new Subject<boolean>();
@@ -17,14 +18,15 @@ export class AuthService {
   constructor(
     private router: Router,
     private afAuth: AngularFireAuth,
-    private trainingService: TrainingService
+    private trainingService: TrainingService,
+    private snackbar: MatSnackBar
   ) {}
   registerUser(authData: AuthData) {
     this.afAuth
       .createUserWithEmailAndPassword(authData.email, authData.password)
       .then((result) => {})
       .catch((error) => {
-        console.log(error);
+        this.snackbar.open(error.message, undefined, { duration: 3000 });
       });
   }
 
@@ -50,7 +52,7 @@ export class AuthService {
         console.log(result);
       })
       .catch((error) => {
-        console.log(error);
+        this.snackbar.open(error.message, undefined, { duration: 3000 });
       });
   }
 
