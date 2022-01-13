@@ -18,6 +18,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { MaterialModule } from './material.module';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
+import { UIService } from './shared/ui.services';
 import { CurrentTrainingComponent } from './training/current-training/current-training.component';
 import { StopTrainingComponent } from './training/current-training/stop-training.component';
 import { NewTrainingComponent } from './training/new-training/new-training.component';
@@ -57,6 +58,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     TrainingService,
     ScreenTrackingService,
     UserTrackingService,
+    UIService
   ],
   bootstrap: [AppComponent],
   entryComponents: [StopTrainingComponent],
