@@ -1,12 +1,12 @@
-import { UIService } from './../shared/ui.services';
-import { TrainingService } from './../training/training.service';
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { UIService } from './../shared/ui.services';
+import { TrainingService } from './../training/training.service';
 import { AuthData } from './auth-data.model';
 import { User } from './user.model';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Injectable()
 export class AuthService {
   authChange = new Subject<boolean>();
@@ -20,8 +20,7 @@ export class AuthService {
     private router: Router,
     private afAuth: AngularFireAuth,
     private trainingService: TrainingService,
-    private uiService: UIService,
-    private snackbar: MatSnackBar
+    private uiService: UIService
   ) {}
   registerUser(authData: AuthData) {
     this.uiService.loadingStateChanged.next(true);
@@ -32,7 +31,7 @@ export class AuthService {
       })
       .catch((error) => {
         this.uiService.loadingStateChanged.next(false);
-        this.snackbar.open(error.message, undefined, { duration: 3000 });
+        this.uiService.showSnackbar(error.message, undefined, 3000);
       });
   }
 
@@ -60,7 +59,7 @@ export class AuthService {
       })
       .catch((error) => {
         this.uiService.loadingStateChanged.next(false);
-        this.snackbar.open(error.message, undefined, { duration: 3000 });
+        this.uiService.showSnackbar(error.message, undefined, 3000);
       });
   }
 
