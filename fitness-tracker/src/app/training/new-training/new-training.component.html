@@ -13,11 +13,24 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-spinner *ngIf="isLoading"></mat-spinner>
+        <mat-spinner *ngIf="isLoading && exercises"></mat-spinner>
       </mat-card-content>
       <mat-card-actions fxLayoutAlign="center" *ngIf="!isLoading">
-        <button type="submit" mat-button [disabled]="form.invalid">
+        <button
+          *ngIf="exercises"
+          type="submit"
+          mat-button
+          [disabled]="form.invalid"
+        >
           Start
+        </button>
+        <button
+          *ngIf="!exercises"
+          type="button"
+          mat-button
+          (click)="fetchExercises()"
+        >
+          Fetch again
         </button>
       </mat-card-actions>
     </mat-card>
