@@ -1,3 +1,4 @@
+import { SharedModule } from './../shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -20,14 +21,7 @@ import { TrainingComponent } from './training.component';
     CurrentTrainingComponent,
     StopTrainingComponent,
   ],
-  imports: [
-    CommonModule,
-    MatTabsModule,
-    MatTableModule,
-    MaterialModule,
-    FormsModule,
-    FlexLayoutModule,
-  ],
+  imports: [SharedModule, MatTabsModule, MatTableModule],
   exports: [],
 })
 export class TrainingModule {}
