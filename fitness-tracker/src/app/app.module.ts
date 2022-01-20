@@ -1,5 +1,9 @@
+import { TrainingModule } from './training/training.module';
 import { NgModule } from '@angular/core';
-import { ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
+import {
+  ScreenTrackingService,
+  UserTrackingService,
+} from '@angular/fire/analytics';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
@@ -12,9 +16,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
-import { LoginComponent } from './auth/login/login.component';
-import { SignupComponent } from './auth/signup/signup.component';
 import { MaterialModule } from './material.module';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
@@ -30,16 +33,9 @@ import { WelcomeComponent } from './welcome/welcome.component';
 @NgModule({
   declarations: [
     AppComponent,
-    SignupComponent,
-    LoginComponent,
-    TrainingComponent,
-    NewTrainingComponent,
-    PastTrainingComponent,
     WelcomeComponent,
     HeaderComponent,
     SidenavListComponent,
-    CurrentTrainingComponent,
-    StopTrainingComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,14 +47,15 @@ import { WelcomeComponent } from './welcome/welcome.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
-    AngularFireAuthModule,
+    AuthModule,
+    TrainingModule,
   ],
   providers: [
     AuthService,
     TrainingService,
     ScreenTrackingService,
     UserTrackingService,
-    UIService
+    UIService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [StopTrainingComponent],
