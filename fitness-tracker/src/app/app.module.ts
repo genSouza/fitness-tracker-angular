@@ -48,7 +48,6 @@ import { WelcomeComponent } from './welcome/welcome.component';
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
     AuthModule,
-    TrainingModule,
   ],
   providers: [
     AuthService,
